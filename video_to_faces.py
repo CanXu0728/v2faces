@@ -3,7 +3,6 @@ import sys
 import os 
 # import dlib
 import numpy as np
-import argparse
 
 
 ### Extrate Faces from a given video
