@@ -12,7 +12,8 @@ import numpy as np
 #       step: int, searching for faces per step_size frames
 #       minSize: (int, int), minimum size of faces
 #       eyes: boolean, if save eye images
-def video_to_faces(input_file, num_frames=50, step=10, minSize=(28,28), eyes=False):
+#       model: str, detection model
+def video_to_faces(input_file, num_frames=50, step=10, minSize=(28,28), eyes=False, model='haarcascade_frontalface_default.xml'):
     counter = 0
     acc = 0
 
@@ -20,7 +21,8 @@ def video_to_faces(input_file, num_frames=50, step=10, minSize=(28,28), eyes=Fal
     # detector = dlib.get_frontal_face_detector()
 
     # load face detector
-    detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    # detector = cv2.CascadeClassifier(os.path.abspath(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'))
+    detector = cv2.CascadeClassifier('./model/'+model)
     # load video file
     vc = cv2.VideoCapture(input_file)
     
@@ -72,10 +74,14 @@ def video_to_faces(input_file, num_frames=50, step=10, minSize=(28,28), eyes=Fal
         success, frame = vc.read()
         acc += 1
     vc.release()
-        
+
+    print('total num of frames: ', acc)
+    print('step size: ', step)
     print('successfully extract %d faces' % counter)
 
 if __name__ == '__main__':
+    print(cv2.data.haarcascades)
+
     input_file = sys.argv[1] # path to video
     try:
         eyes = sys.argv[2]
